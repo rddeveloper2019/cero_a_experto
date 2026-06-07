@@ -1,7 +1,10 @@
+import 'package:cero_a_experto/presentation/providers/chat_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MessageFieldBox extends StatefulWidget {
-  const MessageFieldBox({super.key});
+  final void Function(String? value) onValue;
+  const MessageFieldBox({super.key, required this.onValue});
 
   @override
   State<MessageFieldBox> createState() => _MessageFieldBoxState();
@@ -30,29 +33,34 @@ class _MessageFieldBoxState extends State<MessageFieldBox> {
       filled: true,
       suffixIcon: IconButton(
         onPressed: () {
+          widget.onValue(textController.text);
           textController.clear();
         },
         icon: Icon(Icons.send_outlined),
       ),
       hintText: 'Enter your message',
     );
-    return TextFormField(
-      key: key,
-      // textInputAction: TextInputAction.newline,
-      onTapOutside: (PointerDownEvent? e) {
-        focusNode.unfocus();
-      },
-      focusNode: focusNode,
-      controller: textController,
-      onChanged: (String? value) {
-        print('(**) =>onChanged value:  ${value}');
-      },
-      onFieldSubmitted: (String? value) {
-        print('(**) =>onFieldSubmitted value:  ${textController.text}');
-        textController.clear();
-        focusNode.requestFocus();
-      },
-      decoration: inputDecoration,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+      child: TextFormField(
+        key: key,
+        // textInputAction: TextInputAction.newline,
+        onTapOutside: (PointerDownEvent? e) {
+          focusNode.unfocus();
+        },
+        focusNode: focusNode,
+        controller: textController,
+        onChanged: (String? value) {
+          print('(**) =>onChanged value:  ${value}');
+        },
+        onFieldSubmitted: (String? value) {
+          widget.onValue(value);
+
+          textController.clear();
+          focusNode.requestFocus();
+        },
+        decoration: inputDecoration,
+      ),
     );
   }
 }

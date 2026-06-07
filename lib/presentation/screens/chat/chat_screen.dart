@@ -1,7 +1,10 @@
+import 'package:cero_a_experto/domain/entities/message.dart';
+import 'package:cero_a_experto/presentation/providers/chat_provider.dart';
 import 'package:cero_a_experto/presentation/widgets/chat/her_message_bubble.dart';
 import 'package:cero_a_experto/presentation/widgets/chat/my_message_bubble.dart';
 import 'package:cero_a_experto/presentation/widgets/shared/message_field_box.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
@@ -31,6 +34,7 @@ class _ChatView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final chatProvider = context.watch<ChatProvider>();
     return SafeArea(
       bottom: true,
       child: Padding(
@@ -39,16 +43,28 @@ class _ChatView extends StatelessWidget {
           children: [
             Expanded(
               child: ListView.builder(
-                itemCount: 90,
+                controller: chatProvider.chatScrollController,
+                itemCount: chatProvider.messages.length,
                 itemBuilder: (BuildContext context, int index) {
-                  if (index % 2 == 0) {
-                    return HerMessageBubble();
+                  final message = chatProvider.messages[index];
+                  if (message.fromWho == FromWho.her) {
+                    return HerMessageBubble(
+                      message: message,
+                    );
                   }
-                  return MyMessageBubble();
+                  return MyMessageBubble(
+                    message: message,
+                  );
                 },
               ),
             ),
-            MessageFieldBox(),
+            MessageFieldBox(
+              onValue: (String? value) {
+                if (value != null && value.trim().isNotEmpty) {
+                  context.read<ChatProvider>().sendMessage(value);
+                }
+              },
+            ),
           ],
         ),
       ),

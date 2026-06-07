@@ -1,7 +1,9 @@
+import 'package:cero_a_experto/domain/entities/message.dart';
 import 'package:flutter/material.dart';
 
 class HerMessageBubble extends StatelessWidget {
-  const HerMessageBubble({super.key});
+  final Message message;
+  const HerMessageBubble({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -16,22 +18,26 @@ class HerMessageBubble extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
             child: Text(
-              'Lorem ipsum',
+              message.text,
               style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.normal),
               textAlign: TextAlign.start,
             ),
           ),
         ),
-        SizedBox(height: 10),
-        _ImageBubble(),
-        SizedBox(height: 10),
+        SizedBox(height: 5),
+        if (message.imageUrl != null)
+          _ImageBubble(
+            imageUrl: message.imageUrl!,
+          ),
+        SizedBox(height: 5),
       ],
     );
   }
 }
 
 class _ImageBubble extends StatelessWidget {
-  const _ImageBubble();
+  final String imageUrl;
+  const _ImageBubble({required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +45,7 @@ class _ImageBubble extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: Image.network(
-        'https://yesno.wtf/assets/yes/8-2f93962e2ab24427df8589131da01a4d.gif',
+        imageUrl,
         width: size.width * 0.7,
         height: 150,
         fit: BoxFit.cover,
