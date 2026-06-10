@@ -1,3 +1,5 @@
+import 'package:cero_a_experto/config/theme/app_theme.dart';
+import 'package:cero_a_experto/presentation/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,22 +13,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(colorScheme: .fromSeed(seedColor: const Color.fromARGB(255, 58, 183, 64))),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  final dynamic title;
-
-  const MyHomePage({super.key, required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: Center(child: Column()),
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme().getTheme(),
+      home: const HomeScreen(),
     );
   }
 }
