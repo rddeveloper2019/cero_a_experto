@@ -1,5 +1,5 @@
+import 'package:cero_a_experto/config/router/app_router.dart';
 import 'package:cero_a_experto/config/theme/app_theme.dart';
-import 'package:cero_a_experto/presentation/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,11 +11,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: AppTheme().getTheme(),
-      home: const HomeScreen(),
+      routerConfig: appRouter,
     );
   }
 }
