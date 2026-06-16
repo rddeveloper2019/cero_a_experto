@@ -40,4 +40,22 @@ const appMenuItems = <MenuItem>[
     link: '/snackbars',
     icon: Icons.info_outline,
   ),
+  MenuItem(
+    title: 'Animated Container',
+    subTitle: 'Animated statefull widget',
+    link: '/animated',
+    icon: Icons.check_box_outline_blank_outlined,
+  ),
+  MenuItem(
+    title: 'UI Controls',
+    subTitle: 'Checkbox Radio + Tiles',
+    link: '/ui-controls',
+    icon: Icons.check_box_outlined,
+  ),
+  MenuItem(
+    title: 'App Tutorial',
+    subTitle: 'PageView',
+    link: '/app-tutorial',
+    icon: Icons.app_blocking,
+  ),
 ];
