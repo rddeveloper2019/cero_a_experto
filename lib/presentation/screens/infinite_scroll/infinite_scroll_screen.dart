@@ -15,12 +15,19 @@ class InfiniteScrollScreen extends StatefulWidget {
 
 class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
   final ScrollController controller = ScrollController();
-  final List<int> imagesIds = [1, 2, 3, 4, 5];
+
+  final List<int> imagesIds = [];
   bool isLoading = false;
 
-  Future<void> addFiveImages() async {
-    final lastId = imagesIds.lastOrNull ?? 0;
-    imagesIds.addAll([lastId + 1, lastId + 2, lastId + 3, lastId + 4, lastId + 5]);
+  void addFiveImages() {
+    final random = Random();
+    imagesIds.addAll([
+      random.nextInt(200),
+      random.nextInt(200),
+      random.nextInt(200),
+      random.nextInt(200),
+      random.nextInt(200),
+    ]);
   }
 
   Future<void> loadNextPage() async {
@@ -32,7 +39,7 @@ class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
 
     await Future.delayed(const Duration(milliseconds: 2200));
 
-    await addFiveImages();
+    addFiveImages();
 
     setState(() {
       isLoading = false;
@@ -46,15 +53,9 @@ class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
       isLoading = true;
     });
     await Future.delayed(Duration(seconds: 2));
-    final random = Random();
+
     imagesIds.clear();
-    imagesIds.addAll([
-      random.nextInt(100),
-      random.nextInt(100),
-      random.nextInt(100),
-      random.nextInt(100),
-      random.nextInt(100),
-    ]);
+    addFiveImages();
     setState(() {
       isLoading = false;
     });
@@ -73,6 +74,8 @@ class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
   @override
   void initState() {
     super.initState();
+
+    addFiveImages();
 
     controller.addListener(() {
       if (isLoading) return;

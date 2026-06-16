@@ -1,4 +1,5 @@
 import 'package:cero_a_experto/config/menu/menu-items.dart';
+import 'package:cero_a_experto/presentation/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -11,9 +12,10 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter Material 3'),
+        title: Text('Widgets App'),
       ),
       body: _HomeView(),
+      drawer: SideMenu(),
     );
   }
 }
