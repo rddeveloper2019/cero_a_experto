@@ -1,5 +1,8 @@
+import 'package:cero_a_experto/providers/theme_color_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cero_a_experto/config/menu/menu-items.dart';
 import 'package:cero_a_experto/presentation/widgets/side_menu.dart';
+import 'package:cero_a_experto/presentation/widgets/theme_toggle.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -10,23 +13,32 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         title: Text('Widgets App'),
+        actions: [ThemeToggle()],
       ),
       body: _HomeView(),
-      drawer: SideMenu(),
+      drawer: Builder(
+        builder: (context) {
+          final closeDrawer = scaffoldKey.currentState?.closeDrawer;
+          return SideMenu(closeDrawer: closeDrawer);
+        },
+      ),
     );
   }
 }
 
-class _HomeView extends StatelessWidget {
+class _HomeView extends ConsumerWidget {
   const _HomeView({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ListView.builder(
       itemCount: appMenuItems.length,
       itemBuilder: (BuildContext context, int index) {
@@ -37,18 +49,16 @@ class _HomeView extends StatelessWidget {
           link: link,
         ) = appMenuItems[index];
 
-        final ColorScheme(primary: primaryColor) = Theme.of(context).colorScheme;
-
         return ListTile(
           leading: Icon(
             icon,
-            color: primaryColor,
+            color: ref.watch(themeColorProvider),
           ),
           title: Text(title),
           subtitle: Text(subTitle),
           trailing: Icon(
             Icons.chevron_right_rounded,
-            color: primaryColor,
+            color: ref.watch(themeColorProvider),
           ),
           onTap: () {
             context.push(link);
