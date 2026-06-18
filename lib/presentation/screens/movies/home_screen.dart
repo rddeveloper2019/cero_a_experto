@@ -1,3 +1,4 @@
+import 'package:cero_a_experto/config/constants/environment.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -9,6 +10,13 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Cinemapedia'),
+      ),
+      body: Column(
+        children: [
+          Text(Environment.apiKey),
+          Text(Environment.apiReadAccessToken),
+          Text(Environment.accountId.toString()),
+        ],
       ),
     );
   }
