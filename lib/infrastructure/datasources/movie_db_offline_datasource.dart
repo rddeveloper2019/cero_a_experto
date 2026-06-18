@@ -374,7 +374,9 @@ const data = {
 class MovieDbOfflineDatasource extends MoviesDatasource {
   @override
   Future<List<Movie>> getNowPlaying({int page = 1, String language = 'en-US'}) async {
-    final List<Movie> movies = [...MovieDbResponse.fromJson(data).results.map((m) => MovieMapper.movieDBToEntity(m))];
+    final List<Movie> movies = [
+      ...MovieDbResponse.fromJson(data).results.map((m) => MovieMapper.movieDBToEntity(m)),
+    ];
 
     return movies;
   }

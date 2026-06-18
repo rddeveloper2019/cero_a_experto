@@ -1,4 +1,6 @@
-import 'package:cero_a_experto/presentation/providers/movies/movies_providers.dart';
+import 'package:cero_a_experto/presentation/providers/movies/movies_provider.dart';
+import 'package:cero_a_experto/presentation/providers/providers.dart';
+import 'package:cero_a_experto/presentation/widgets/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 
@@ -8,11 +10,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Cinemapedia'),
-      ),
+    return const Scaffold(
       body: _HomeView(),
+      bottomNavigationBar: CustomBottomNavigation(),
     );
   }
 }
@@ -38,16 +38,15 @@ class __HomeViewState extends ConsumerState<_HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
-    return ListView.builder(
-      itemCount: nowPlayingMovies.length,
-      itemBuilder: (BuildContext context, int index) {
-        final movie = nowPlayingMovies[index];
-
-        return ListTile(
-          title: Text(movie.title),
-        );
-      },
+    final moviesSlideShowMovies = ref.watch(moviesSlideShowProvider);
+    return Column(
+      children: [
+        const CustomAppBar(),
+        if (moviesSlideShowMovies.isNotEmpty)
+          MoviesSlideShow(
+            movies: moviesSlideShowMovies,
+          ),
+      ],
     );
   }
 }
