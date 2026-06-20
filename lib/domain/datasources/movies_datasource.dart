@@ -7,4 +7,22 @@ abstract class MoviesDatasource {
 
     // String sort_by = 'created_at.asc',
   });
+  Future<List<Movie>> getPopular({
+    int page = 1,
+    String language = 'en-US',
+
+    // String sort_by = 'created_at.asc',
+  });
+  Future<List<Movie>> getUpcoming({
+    int page = 1,
+    String language = 'en-US',
+
+    // String sort_by = 'created_at.asc',
+  });
+  Future<List<Movie>> getTopRated({
+    int page = 1,
+    String language = 'en-US',
+
+    // String sort_by = 'created_at.asc',
+  });
 }

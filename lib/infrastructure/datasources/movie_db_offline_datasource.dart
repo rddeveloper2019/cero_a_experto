@@ -374,10 +374,27 @@ const data = {
 class MovieDbOfflineDatasource extends MoviesDatasource {
   @override
   Future<List<Movie>> getNowPlaying({int page = 1, String language = 'en-US'}) async {
+    await Future.delayed(const Duration(milliseconds: 1200));
+
     final List<Movie> movies = [
       ...MovieDbResponse.fromJson(data).results.map((m) => MovieMapper.movieDBToEntity(m)),
     ];
-
+    movies.shuffle();
     return movies;
+  }
+
+  @override
+  Future<List<Movie>> getPopular({int page = 1, String language = 'en-US'}) {
+    return getNowPlaying(language: language, page: page);
+  }
+
+  @override
+  Future<List<Movie>> getUpcoming({int page = 1, String language = 'en-US'}) {
+    return getNowPlaying(language: language, page: page);
+  }
+
+  @override
+  Future<List<Movie>> getTopRated({int page = 1, String language = 'en-US'}) {
+    return getNowPlaying(language: language, page: page);
   }
 }

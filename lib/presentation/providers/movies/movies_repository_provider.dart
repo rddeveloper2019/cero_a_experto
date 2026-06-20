@@ -5,8 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final moviesRepositoryProvider = Provider.autoDispose<MoviesRepository>(
   (ref) {
-    // final online = MovieDbDatasource();
-    final offline = MovieDbOfflineDatasource();
-    return MovieRepositoryImpl(offline);
+    // final source = MovieDbDatasource();
+    final source = MovieDbOfflineDatasource();
+    return MovieRepositoryImpl(source);
   },
 );

@@ -7,29 +7,63 @@ import 'package:cero_a_experto/infrastructure/models/moviedb/movie_db_response.d
 import 'package:dio/dio.dart';
 
 class MovieDbDatasource extends MoviesDatasource {
-  @override
-  Future<List<Movie>> getNowPlaying({int page = 1, String language = 'en-US'}) async {
-    final dio = Dio(
-      BaseOptions(
-        baseUrl: baseUrl,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${Environment.apiReadAccessToken}',
-        },
-      ),
-    );
+  final dio = Dio(
+    BaseOptions(
+      baseUrl: baseUrl,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${Environment.apiReadAccessToken}',
+      },
+    ),
+  );
 
-    final response = await dio.get(
-      '/movie/now_playing',
-      queryParameters: {'page': page, 'language': language},
-    );
-
+  List<Movie> _jsonToMovies(dynamic json) {
     final List<Movie> movies = [
-      ...MovieDbResponse.fromJson(response.data).results.map(
+      ...MovieDbResponse.fromJson(json).results.map(
         (m) => MovieMapper.movieDBToEntity(m),
       ),
     ];
 
     return movies;
+  }
+
+  @override
+  Future<List<Movie>> getNowPlaying({int page = 1, String language = 'en-US'}) async {
+    final response = await dio.get(
+      '/movie/now_playing',
+      queryParameters: {'page': page, 'language': language},
+    );
+
+    return _jsonToMovies(response.data);
+  }
+
+  @override
+  Future<List<Movie>> getPopular({int page = 1, String language = 'en-US'}) async {
+    final response = await dio.get(
+      '/movie/popular',
+      queryParameters: {'page': page, 'language': language},
+    );
+
+    return _jsonToMovies(response.data);
+  }
+
+  @override
+  Future<List<Movie>> getUpcoming({int page = 1, String language = 'en-US'}) async {
+    final response = await dio.get(
+      '/movie/upcoming',
+      queryParameters: {'page': page, 'language': language},
+    );
+
+    return _jsonToMovies(response.data);
+  }
+
+  @override
+  Future<List<Movie>> getTopRated({int page = 1, String language = 'en-US'}) async {
+    final response = await dio.get(
+      '/movie/top_rated',
+      queryParameters: {'page': page, 'language': language},
+    );
+
+    return _jsonToMovies(response.data);
   }
 }
