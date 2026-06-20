@@ -1,5 +1,6 @@
 import 'package:cero_a_experto/presentation/providers/movies/movies_provider.dart';
 import 'package:cero_a_experto/presentation/providers/providers.dart';
+import 'package:cero_a_experto/presentation/widgets/shared/extensions.dart';
 import 'package:cero_a_experto/presentation/widgets/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
@@ -40,10 +41,6 @@ class __HomeViewState extends ConsumerState<_HomeView> {
   @override
   Widget build(BuildContext context) {
     final initialLoading = ref.watch(initialLoadingProvider);
-
-    if (initialLoading) {
-      return FullScreenLoader();
-    }
 
     final slideShowMovies = ref.watch(moviesSlideShowProvider);
     final nowPlayingMoviesMovies = ref.watch(nowPlayingMoviesProvider);
@@ -96,6 +93,6 @@ class __HomeViewState extends ConsumerState<_HomeView> {
           ),
         ),
       ],
-    );
+    ).loading(initialLoading);
   }
 }

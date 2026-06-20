@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class FullScreenLoader extends StatelessWidget {
-  FullScreenLoader({super.key});
+  const FullScreenLoader({super.key});
 
   Stream<String> getLoadingMessages() {
     const List<String> messages = [
