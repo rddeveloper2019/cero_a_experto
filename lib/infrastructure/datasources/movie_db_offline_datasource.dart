@@ -2,6 +2,7 @@ import 'package:cero_a_experto/domain/datasources/movies_datasource.dart';
 import 'package:cero_a_experto/domain/entities/movie.dart';
 import 'package:cero_a_experto/infrastructure/mappers/movie_mapper.dart';
 import 'package:cero_a_experto/infrastructure/models/moviedb/movie_db_response.dart';
+import 'package:cero_a_experto/infrastructure/models/moviedb/movie_details.dart';
 
 const data = {
   "dates": {"maximum": "2026-06-24", "minimum": "2026-05-13"},
@@ -371,6 +372,66 @@ const data = {
   "total_results": 5824,
 };
 
+const movieData = {
+  "adult": false,
+  "backdrop_path": "/laR2dpcNpbv83jdlRUNAYPPjH90.jpg",
+  "belongs_to_collection": {
+    "id": 931431,
+    "name": "Mortal Kombat (Reboot) Collection",
+    "poster_path": "/fzMBv3Bu8sWdsCQJbtF0XhY4Q2X.jpg",
+    "backdrop_path": "/hq4SfEXIXaukxNGf5VgXgGb3UG4.jpg",
+  },
+  "budget": 80000000,
+  "genres": [
+    {"id": 28, "name": "Action"},
+    {"id": 14, "name": "Fantasy"},
+    {"id": 12, "name": "Adventure"},
+  ],
+  "homepage": "https://www.mortalkombatmovie.com",
+  "id": 931285,
+  "imdb_id": "tt17490712",
+  "origin_country": ["US"],
+  "original_language": "en",
+  "original_title": "Mortal Kombat II",
+  "overview":
+      "The fan favorite champions—now joined by Johnny Cage himself—are pitted against one another in the ultimate, no-holds barred, gory battle to defeat the dark rule of Shao Kahn that threatens the very existence of the Earthrealm and its defenders.",
+  "popularity": 452.2939,
+  "poster_path": "/hwRdDFIhaEmpRgoki805YvyyjZf.jpg",
+  "production_companies": [
+    {"id": 12, "logo_path": "/2ycs64eqV5rqKYHyQK0GVoKGvfX.png", "name": "New Line Cinema", "origin_country": "US"},
+    {"id": 76907, "logo_path": "/ygMQtjsKX7BZkCQhQZY82lgnCUO.png", "name": "Atomic Monster", "origin_country": "US"},
+    {
+      "id": 8000,
+      "logo_path": "/f8NwLg72BByt3eav7lX1lcJfe60.png",
+      "name": "Broken Road Productions",
+      "origin_country": "US",
+    },
+    {"id": 252367, "logo_path": null, "name": "Fireside Films", "origin_country": "US"},
+    {
+      "id": 216687,
+      "logo_path": "/kKVYqekveOvLK1IgqdJojLjQvtu.png",
+      "name": "Domain Entertainment",
+      "origin_country": "US",
+    },
+  ],
+  "production_countries": [
+    {"iso_3166_1": "US", "name": "United States of America"},
+  ],
+  "release_date": "2026-05-06",
+  "revenue": 129079103,
+  "runtime": 116,
+  "softcore": false,
+  "spoken_languages": [
+    {"english_name": "English", "iso_639_1": "en", "name": "English"},
+  ],
+  "status": "Released",
+  "tagline": "Their fight. Our future.",
+  "title": "Mortal Kombat II",
+  "video": false,
+  "vote_average": 7.989,
+  "vote_count": 1591,
+};
+
 class MovieDbOfflineDatasource extends MoviesDatasource {
   @override
   Future<List<Movie>> getNowPlaying({int page = 1, String language = 'en-US'}) async {
@@ -396,5 +457,16 @@ class MovieDbOfflineDatasource extends MoviesDatasource {
   @override
   Future<List<Movie>> getTopRated({int page = 1, String language = 'en-US'}) {
     return getNowPlaying(language: language, page: page);
+  }
+
+  @override
+  Future<Movie> getMovieById({required String id, String language = 'en-US'}) async {
+    await Future.delayed(const Duration(milliseconds: 1200));
+
+    final movieDB = MovieDetails.fromJson(movieData);
+
+    final movie = MovieMapper.movieMovieDetailsToEntity(movieDB);
+
+    return movie;
   }
 }

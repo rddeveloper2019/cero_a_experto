@@ -9,20 +9,14 @@ class FullScreenLoader extends StatelessWidget {
     const List<String> messages = [
       'Калибровка датчиков попкорна...',
       'Анализ дыр в сюжете...',
-      'Ретикуляция кинематографических сплайнов...',
       'Загрузка данных с бортового унитаза...',
-      'Согласование бюджета CGI...',
       'Полировка красной дорожки...',
       'Споры с режиссёрской версией...',
-      'Буферизация четвёртой стены...',
       'Убеждение актёров прийти на съёмку...',
-      'Рендеринг сюжетного поворота...',
       'Распутывание спагетти-кода...',
-      'Заваривание свежую чашку драмы...',
-      'Перезагрузка матрицы...',
     ];
 
-    final milliseconds = Random().nextInt(1200) + 600;
+    final milliseconds = Random().nextInt(300) + 200;
 
     return Stream.periodic(Duration(milliseconds: milliseconds), (int step) {
       return messages[step];

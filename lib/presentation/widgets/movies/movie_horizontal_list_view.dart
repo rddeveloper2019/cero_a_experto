@@ -3,6 +3,7 @@ import 'package:cero_a_experto/config/helpers/human_formats.dart';
 import 'package:cero_a_experto/domain/entities/movie.dart';
 import 'package:cero_a_experto/presentation/widgets/shared/section_title.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class MovieHorizontalListView extends StatefulWidget {
   final List<Movie> movies;
@@ -68,8 +69,10 @@ class _MovieHorizontalListViewState extends State<MovieHorizontalListView> {
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
-                return _Slide(
-                  movie: widget.movies[index],
+                return FadeInRight(
+                  child: _Slide(
+                    movie: widget.movies[index],
+                  ),
                 );
               },
             ),
@@ -90,85 +93,88 @@ class _Slide extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return FadeInRight(
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8),
-        width: 150,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: 150,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.network(
-                  fit: BoxFit.cover,
-                  movie.posterPath,
-                  width: 150,
-                  loadingBuilder: (context, child, progress) {
-                    if (progress != null) {
-                      return const SizedBox(
-                        height: 140,
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                          ),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+      width: 150,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 150,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.network(
+                fit: BoxFit.cover,
+                movie.posterPath,
+                width: 150,
+                loadingBuilder: (context, child, progress) {
+                  if (progress != null) {
+                    return const SizedBox(
+                      height: 140,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
                         ),
-                      );
-                    }
-                    return child;
-                  },
-                ),
+                      ),
+                    );
+                  }
+                  return GestureDetector(
+                    onTap: () {
+                      context.push('/movie/${movie.id}');
+                    },
+                    child: child,
+                  );
+                },
               ),
             ),
+          ),
 
-            const SizedBox(
-              height: 5,
+          const SizedBox(
+            height: 5,
+          ),
+          SizedBox(
+            width: 150,
+            child: Text(
+              movie.title,
+              maxLines: 2,
+              style: textTheme.titleSmall,
             ),
-            SizedBox(
-              width: 150,
-              child: Text(
-                movie.title,
-                maxLines: 2,
-                style: textTheme.titleSmall,
-              ),
-            ),
+          ),
 
-            const SizedBox(
-              height: 5,
-            ),
-            const Spacer(),
-            SizedBox(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.star_half_outlined,
+          const SizedBox(
+            height: 5,
+          ),
+          const Spacer(),
+          SizedBox(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.star_half_outlined,
+                      color: Colors.yellow.shade800,
+                    ),
+                    const SizedBox(
+                      width: 3,
+                    ),
+                    Text(
+                      '${movie.voteAverage}',
+                      style: textTheme.bodyMedium?.copyWith(
                         color: Colors.yellow.shade800,
                       ),
-                      const SizedBox(
-                        width: 3,
-                      ),
-                      Text(
-                        '${movie.voteAverage}',
-                        style: textTheme.bodyMedium?.copyWith(
-                          color: Colors.yellow.shade800,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
+                ),
 
-                  Text(
-                    HumanFormats.number(movie.popularity),
-                    style: textTheme.bodySmall,
-                  ),
-                ],
-              ),
+                Text(
+                  HumanFormats.number(movie.popularity),
+                  style: textTheme.bodySmall,
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -25,4 +25,9 @@ class MovieRepositoryImpl extends MoviesRepository {
   Future<List<Movie>> getTopRated({int page = 1, String language = 'en-US'}) {
     return datasource.getTopRated(page: page, language: language);
   }
+
+  @override
+  Future<Movie> getMovieById({required String id, String language = 'en-US'}) {
+    return datasource.getMovieById(id: id);
+  }
 }

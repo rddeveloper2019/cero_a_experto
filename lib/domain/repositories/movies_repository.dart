@@ -4,25 +4,21 @@ abstract class MoviesRepository {
   Future<List<Movie>> getNowPlaying({
     int page = 1,
     String language = 'en-US',
-
-    // String sort_by = 'created_at.asc',
   });
   Future<List<Movie>> getPopular({
     int page = 1,
     String language = 'en-US',
-
-    // String sort_by = 'created_at.asc',
   });
   Future<List<Movie>> getUpcoming({
     int page = 1,
     String language = 'en-US',
-
-    // String sort_by = 'created_at.asc',
   });
   Future<List<Movie>> getTopRated({
     int page = 1,
     String language = 'en-US',
-
-    // String sort_by = 'created_at.asc',
+  });
+  Future<Movie> getMovieById({
+    required String id,
+    String language = 'en-US',
   });
 }

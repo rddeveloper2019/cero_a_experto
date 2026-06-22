@@ -4,6 +4,7 @@ import 'package:cero_a_experto/domain/datasources/movies_datasource.dart';
 import 'package:cero_a_experto/domain/entities/movie.dart';
 import 'package:cero_a_experto/infrastructure/mappers/movie_mapper.dart';
 import 'package:cero_a_experto/infrastructure/models/moviedb/movie_db_response.dart';
+import 'package:cero_a_experto/infrastructure/models/moviedb/movie_details.dart';
 import 'package:dio/dio.dart';
 
 class MovieDbDatasource extends MoviesDatasource {
@@ -31,8 +32,13 @@ class MovieDbDatasource extends MoviesDatasource {
   Future<List<Movie>> getNowPlaying({int page = 1, String language = 'en-US'}) async {
     final response = await dio.get(
       '/movie/now_playing',
+
       queryParameters: {'page': page, 'language': language},
     );
+
+    if (response.statusCode != 200) {
+      throw Exception('Movies fetch error');
+    }
 
     return _jsonToMovies(response.data);
   }
@@ -44,6 +50,10 @@ class MovieDbDatasource extends MoviesDatasource {
       queryParameters: {'page': page, 'language': language},
     );
 
+    if (response.statusCode != 200) {
+      throw Exception('Movies fetch error');
+    }
+
     return _jsonToMovies(response.data);
   }
 
@@ -53,6 +63,10 @@ class MovieDbDatasource extends MoviesDatasource {
       '/movie/upcoming',
       queryParameters: {'page': page, 'language': language},
     );
+
+    if (response.statusCode != 200) {
+      throw Exception('Movies fetch error');
+    }
 
     return _jsonToMovies(response.data);
   }
@@ -64,6 +78,27 @@ class MovieDbDatasource extends MoviesDatasource {
       queryParameters: {'page': page, 'language': language},
     );
 
+    if (response.statusCode != 200) {
+      throw Exception('Movies fetch error');
+    }
+
     return _jsonToMovies(response.data);
+  }
+
+  @override
+  Future<Movie> getMovieById({required String id, String language = 'en-US'}) async {
+    final response = await dio.get(
+      '/movie/$id',
+      queryParameters: {'language': language},
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Movie by ID: $id not found');
+    }
+    final movieDB = MovieDetails.fromJson(response.data);
+
+    final movie = MovieMapper.movieMovieDetailsToEntity(movieDB);
+
+    return movie;
   }
 }
